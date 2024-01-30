@@ -97,11 +97,9 @@ bool WinsockSetup()
    // Resolve the server address and port
    iResult = GetAddrInfoW(NULL, g.ServicePort.c_str(), &hints, &addrlocal);
    if (iResult != 0) {
-      WSACleanup();
       return HandleError(L"GetAddrInfoW", iResult);
    }
    if (addrlocal == NULL) {
-      WSACleanup();
       return HandleError(L"Function GetAddrInfoW failed to resolve the interface.");
    }
 
@@ -109,15 +107,12 @@ bool WinsockSetup()
    g.ListenSocket = WSASocket(addrlocal->ai_family, addrlocal->ai_socktype,
       addrlocal->ai_protocol, NULL, 0, WSA_FLAG_OVERLAPPED);
    if (g.ListenSocket == INVALID_SOCKET) {
-      WSACleanup();
       return HandleError(L"WSASocket", WSAGetLastError());
    }
 
    // Bind the socket
    iResult = bind(g.ListenSocket, addrlocal->ai_addr, (int)addrlocal->ai_addrlen);
    if (iResult == SOCKET_ERROR) {
-      closesocket(g.ListenSocket);
-      WSACleanup();
       return HandleError(L"bind", WSAGetLastError());
    }
 
@@ -127,8 +122,6 @@ bool WinsockSetup()
    // Listen for connections
    iResult = listen(g.ListenSocket, SOMAXCONN);
    if (iResult == SOCKET_ERROR) {
-      closesocket(g.ListenSocket);
-      WSACleanup();
       return HandleError(L"listen", WSAGetLastError());
    }
 
@@ -136,8 +129,6 @@ bool WinsockSetup()
    iResult = setsockopt(g.ListenSocket, SOL_SOCKET, SO_SNDBUF,
       (char*)&iZero, sizeof(iZero));
    if (iResult == SOCKET_ERROR) {
-      closesocket(g.ListenSocket);
-      WSACleanup();
       return HandleError(L"setsockopt", WSAGetLastError());
    }
 

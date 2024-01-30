@@ -4,6 +4,8 @@
 
 #include "WinsockIOCP.h"
 
+extern GlobalVariables g;
+
 /* ****************************************************************************** */
 /*                                                                                */
 /*  Function : FileExists                                                         */
@@ -31,8 +33,11 @@ bool FileExists(LPCTSTR lpszFileName)
 
 bool HandleError(LPCTSTR lpszErrorMsg)
 {
-   _tprintf(lpszErrorMsg);
-   _tprintf(L"\r\n");
+   // Winsock Cleanup
+   if (g.ListenSocket > 0) {
+      closesocket(g.ListenSocket);
+   }
+   WSACleanup();
 
    WriteToEventLog(EVENTLOG_ERROR_TYPE, lpszErrorMsg);
 
@@ -52,6 +57,12 @@ bool HandleError(LPCTSTR lpszFunction, int iErrorNum)
    TCHAR szMessage[MAX_PATH];
    TCHAR szErrorMsg[MAX_PATH];
 
+   // Winsock Cleanup
+   if (g.ListenSocket > 0) {
+      closesocket(g.ListenSocket);
+   }
+   WSACleanup();
+
    wmemset(szMessage, 0x00, _countof(szMessage));
    wmemset(szErrorMsg, 0x00, _countof(szErrorMsg));
 
@@ -62,12 +73,7 @@ bool HandleError(LPCTSTR lpszFunction, int iErrorNum)
    _stprintf_s(szErrorMsg, _countof(szErrorMsg),
       L"Function '%s' failed with error %d: %s", lpszFunction, iErrorNum, szMessage);
 
-   _tprintf(szErrorMsg);
-   _tprintf(L"\r\n");
-
    WriteToEventLog(EVENTLOG_ERROR_TYPE, szErrorMsg);
-
-   WSASetLastError(0);
 
    return false;
 }
