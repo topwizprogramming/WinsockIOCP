@@ -11,7 +11,6 @@
 #include <ws2tcpip.h>
 
 #include <string>
-using std::string;
 using std::wstring;
 
 struct GlobalVariables
