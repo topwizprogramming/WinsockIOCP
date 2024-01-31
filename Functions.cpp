@@ -8,6 +8,38 @@ extern GlobalVariables g;
 
 /* ****************************************************************************** */
 /*                                                                                */
+/*   Function :   MainProcessing                                                  */
+/*                                                                                */
+/*   Purpose  :   This is the main processing function.                           */
+/*                                                                                */
+/* ****************************************************************************** */
+
+bool MainProcessing(void)
+{
+   SOCKET AcceptSocket = INVALID_SOCKET;
+   LPPER_HANDLE_DATA PerHandleData;
+
+   // Accept connections and assign to the completion port
+   while (true)
+   {
+      AcceptSocket = WSAAccept(g.ListenSocket, NULL, NULL, NULL, 0);
+      if (AcceptSocket == SOCKET_ERROR) {
+         return HandleError(L"WSAAccept", WSAGetLastError());
+      }
+
+      // Create a socket information structure to associate with the socket
+      if ((PerHandleData = (LPPER_HANDLE_DATA)GlobalAlloc(GPTR, sizeof(PER_HANDLE_DATA))) == NULL)
+         printf("GlobalAlloc() failed with error %d\n", GetLastError());
+      else
+         printf("GlobalAlloc() for LPPER_HANDLE_DATA is OK!\n");
+      return 1;
+   }
+
+   return true;
+}
+
+/* ****************************************************************************** */
+/*                                                                                */
 /*   Function :   ReadCommandLine                                                 */
 /*                                                                                */
 /*   Purpose  :   Get the port from the command line.                             */
@@ -133,4 +165,17 @@ bool WinsockSetup()
    }
 
    return true;
+}
+
+/* ****************************************************************************** */
+/*                                                                                */
+/*   Function :   WorkerThread                                                    */
+/*                                                                                */
+/*   Purpose  :   Server worker thread main function.                             */
+/*                                                                                */
+/* ****************************************************************************** */
+
+DWORD WINAPI WorkerThread(LPVOID lpParam)
+{
+   return 0;
 }

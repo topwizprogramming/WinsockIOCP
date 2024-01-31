@@ -20,13 +20,17 @@ struct GlobalVariables
    SOCKET ListenSocket = INVALID_SOCKET;
 };
 
-// WinsockIOCP.cpp
-DWORD WINAPI WorkerThread(LPVOID lpParam);
+typedef struct
+{
+   SOCKET Socket;
+} PER_HANDLE_DATA, * LPPER_HANDLE_DATA;
 
 // Functions.cpp
+bool MainProcessing(void);
 bool ReadCommandLine(int argc, TCHAR* argv[]);
 bool ThreadSetup();
 bool WinsockSetup();
+DWORD WINAPI WorkerThread(LPVOID lpParam);
 
 // Utility.cpp
 bool FileExists(LPCTSTR lpszFileName);

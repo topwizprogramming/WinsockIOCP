@@ -23,21 +23,16 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
       return 0;
    }
 
+   // Perform main processing
+   if (!MainProcessing()) {
+      return 0;
+   }
+
    // Winsock Cleanup
+   if (g.ListenSocket > 0) {
+      closesocket(g.ListenSocket);
+   }
    WSACleanup();
 
-   return 0;
-}
-
-/* ****************************************************************************** */
-/*                                                                                */
-/*   Function :   WorkerThread                                                    */
-/*                                                                                */
-/*   Purpose  :   Server worker thread main function.                             */
-/*                                                                                */
-/* ****************************************************************************** */
-
-DWORD WINAPI WorkerThread(LPVOID lpParam)
-{
    return 0;
 }
