@@ -27,10 +27,12 @@ typedef struct
 
 // Functions.cpp
 bool MainProcessing(void);
-bool ReadCommandLine(int argc, TCHAR* argv[]);
+DWORD WINAPI WorkerThread(LPVOID lpParam);
+
+// Setup.cpp
+bool CmdLineSetup(int argc, TCHAR* argv[]);
 bool ThreadSetup();
 bool WinsockSetup();
-DWORD WINAPI WorkerThread(LPVOID lpParam);
 
 // Utility.cpp
 bool FileExists(LPCTSTR lpszFileName);

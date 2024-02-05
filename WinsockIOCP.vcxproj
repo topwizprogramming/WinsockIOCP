@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Functions.cpp" />
+    <ClCompile Include="Setup.cpp" />
     <ClCompile Include="WinsockIOCP.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>

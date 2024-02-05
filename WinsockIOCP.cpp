@@ -9,7 +9,7 @@ GlobalVariables g;
 int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 {
    // Get the port from the command line
-   if (!ReadCommandLine(argc, argv)) {
+   if (!CmdLineSetup(argc, argv)) {
       return 0;
    }
 
