@@ -23,7 +23,8 @@ struct GlobalVariables
 typedef struct
 {
    SOCKET Socket;
-} PER_HANDLE_DATA, * LPPER_HANDLE_DATA;
+   int RequestNbr;
+} PER_CONN_DATA, * LPPER_CONN_DATA;
 
 // Functions.cpp
 bool MainProcessing(void);

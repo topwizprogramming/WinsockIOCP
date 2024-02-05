@@ -17,23 +17,27 @@ extern GlobalVariables g;
 bool MainProcessing(void)
 {
    SOCKET Accept = INVALID_SOCKET;
-   LPPER_HANDLE_DATA PerHandleData;
+   LPPER_CONN_DATA PerConnData;
+   int RequestNbr = 0;
 
    // Loop forever accepting connections from clients
    while (true)
    {
+      RequestNbr++;
+
       Accept = WSAAccept(g.ListenSocket, NULL, NULL, NULL, 0);
       if (Accept == SOCKET_ERROR) {
          return HandleError(L"WSAAccept", WSAGetLastError());
       }
 
-      PerHandleData = (LPPER_HANDLE_DATA)GlobalAlloc(GPTR, sizeof(PER_HANDLE_DATA));
-      if (PerHandleData == NULL) {
+      PerConnData = (LPPER_CONN_DATA)GlobalAlloc(GPTR, sizeof(PER_CONN_DATA));
+      if (PerConnData == NULL) {
          return HandleError(L"GlobalAlloc", GetLastError());
       }
-      PerHandleData->Socket = Accept;
+      PerConnData->Socket = Accept;
+      PerConnData->RequestNbr = RequestNbr;
 
-      if (CreateIoCompletionPort((HANDLE)Accept, g.CompletionPort, (DWORD)PerHandleData, 0) == NULL) {
+      if (CreateIoCompletionPort((HANDLE)Accept, g.CompletionPort, (DWORD)PerConnData, 0) == NULL) {
          return HandleError(L"CreateIoCompletionPort", GetLastError());
       }
    }
