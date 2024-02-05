@@ -22,7 +22,7 @@ struct GlobalVariables
 
 typedef struct
 {
-   SOCKET Socket;
+   SOCKET ClientSocket;
    int RequestNbr;
 } PER_CONN_DATA, * LPPER_CONN_DATA;
 
