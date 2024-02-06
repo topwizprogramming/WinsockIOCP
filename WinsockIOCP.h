@@ -20,12 +20,6 @@ struct GlobalVariables
    SOCKET ListenSocket = INVALID_SOCKET;
 };
 
-typedef struct
-{
-   SOCKET ClientSocket;
-   int RequestNbr;
-} PER_CONN_DATA, * LPPER_CONN_DATA;
-
 // Functions.cpp
 bool MainProcessing(void);
 DWORD WINAPI WorkerThread(LPVOID lpParam);
