@@ -38,8 +38,9 @@ bool CmdLineSetup(int argc, TCHAR* argv[])
 bool ThreadSetup()
 {
    SYSTEM_INFO sysInfo;
-   HANDLE ThreadHandle = NULL;
-   DWORD dwIndex = 0;
+   HANDLE hThread = INVALID_HANDLE_VALUE;
+   DWORD dwThreadId = 0;
+   DWORD dwCPU = 0;
 
    // Determine how many processors are on the system
    GetSystemInfo(&sysInfo);
@@ -48,17 +49,17 @@ bool ThreadSetup()
    g.CompletionPort = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
 
    // Create worker threads based on the number of processors.
-   for (dwIndex = 0; dwIndex < sysInfo.dwNumberOfProcessors * 2; dwIndex++)
+   for (dwCPU = 0; dwCPU < sysInfo.dwNumberOfProcessors * 2; dwCPU++)
    {
       // Create a server worker thread, and pass the completion port.
-      ThreadHandle = CreateThread(NULL, 0, WorkerThread, g.CompletionPort, 0, NULL);
+      hThread = CreateThread(NULL, 0, WorkerThread, g.CompletionPort, 0, &dwThreadId);
 
-      if (ThreadHandle == NULL) {
+      if (hThread == NULL) {
          return HandleError(L"CreateThread", GetLastError());
       }
       else {
          // Close the thread handle
-         CloseHandle(ThreadHandle);
+         CloseHandle(hThread);
       }
    }
 

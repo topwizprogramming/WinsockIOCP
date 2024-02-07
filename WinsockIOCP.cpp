@@ -13,7 +13,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
       return 0;
    }
 
-   // Create threads and the I/O Completion Port
+   // Create the I/O Completion Port and Threads
    if (!ThreadSetup()) {
       return 0;
    }

@@ -12,6 +12,7 @@
 
 #include <string>
 using std::wstring;
+using std::string;
 
 struct GlobalVariables
 {
@@ -20,7 +21,23 @@ struct GlobalVariables
    SOCKET ListenSocket = INVALID_SOCKET;
 };
 
-// Functions.cpp
+#define DATA_BUFSIZE 8192
+
+typedef struct
+{
+   OVERLAPPED Overlapped;
+   WSABUF DataBuf;
+   CHAR Buffer[DATA_BUFSIZE];
+   DWORD BytesSend;
+   DWORD BytesRecv;
+} PER_IO_OPERATION_DATA, * LPPER_IO_OPERATION_DATA;
+
+typedef struct _PER_CONNECTION_DATA {
+   SOCKET ClientSocket;
+   int RequestNbr;
+} PER_CONNECTION_DATA, * LPPER_CONNECTION_DATA;
+
+// MainFunctions.cpp
 bool MainProcessing(void);
 DWORD WINAPI WorkerThread(LPVOID lpParam);
 
