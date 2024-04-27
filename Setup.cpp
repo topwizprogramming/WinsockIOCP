@@ -49,7 +49,7 @@ bool ThreadSetup()
    g.CompletionPort = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
 
    // Create worker threads based on the number of processors.
-   for (dwCPU = 0; dwCPU < sysInfo.dwNumberOfProcessors * 2; dwCPU++)
+   for (dwCPU = 0; dwCPU < sysInfo.dwNumberOfProcessors; dwCPU++)
    {
       // Create a server worker thread, and pass the completion port.
       hThread = CreateThread(NULL, 0, WorkerThread, g.CompletionPort, 0, &dwThreadId);

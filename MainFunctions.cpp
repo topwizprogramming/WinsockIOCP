@@ -113,20 +113,6 @@ DWORD WINAPI WorkerThread(LPVOID lpParameter)
          PerConnData->RequestNbr, dwBytesTransferred);
       WriteToLogFile(szMessage);
 
-      /*
-
-      The received data will be a web request consisting of HTTP headers in Ansi
-      format. Each individual header has \r\n characters at the end. Followed by
-      that will be another \r\n and possibly some amount of binary data. The size
-      of the binary data will be in the header ContentLength. Most requests will
-      be less than the 8192 buffer size but we need to support posting large
-      files to the server.
-
-      All headers should end up in the string variable HttpHeaders. The binary
-      data should end up in lpPostedData.
-      
-      */
-
    }
 
    return 1;
